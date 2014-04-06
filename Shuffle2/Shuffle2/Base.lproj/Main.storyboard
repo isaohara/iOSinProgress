@@ -17,12 +17,13 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ql7-fo-Nla">
-                                <rect key="frame" x="130" y="518" width="60" height="30"/>
+                                <rect key="frame" x="39" y="518" width="60" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Shuffle">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
+                                    <action selector="shuffle:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="yg4-6Y-x8Z"/>
                                     <segue destination="Lhp-jw-CXs" kind="modal" identifier="toResult" modalTransitionStyle="crossDissolve" id="XEj-xg-Hdr"/>
                                 </connections>
                             </button>
@@ -31,7 +32,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="Main" id="g4Z-ib-md0">
-                                        <barButtonItem key="rightBarButtonItem" title="Entry" id="4NF-ZH-0xl">
+                                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Entry" id="4NF-ZH-0xl">
                                             <connections>
                                                 <segue destination="1yR-qB-Hr4" kind="modal" identifier="toEntry" modalTransitionStyle="flipHorizontal" id="6Ao-KS-zIF"/>
                                             </connections>
@@ -55,11 +56,25 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
                             </view>
+                            <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2" minimumValue="2" maximumValue="8" translatesAutoresizingMaskIntoConstraints="NO" id="xIH-Tz-5aY">
+                                <rect key="frame" x="192" y="518" width="94" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <action selector="changeTeams:" destination="vXZ-lx-hvc" eventType="valueChanged" id="bxe-zi-ALC"/>
+                                </connections>
+                            </stepper>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dah-bf-40F">
+                                <rect key="frame" x="120" y="522" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="plate" destination="bs7-lu-KD1" id="VHt-LC-orO"/>
+                        <outlet property="teams" destination="Dah-bf-40F" id="gDb-BJ-oPd"/>
                         <outlet property="tray" destination="056-t1-P0S" id="3A4-Zx-esR"/>
                     </connections>
                 </viewController>

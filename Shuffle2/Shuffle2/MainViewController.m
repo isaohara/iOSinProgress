@@ -13,8 +13,13 @@
 #import "EntryMember.h"
 
 @interface MainViewController ()
+
 @property (weak, nonatomic) IBOutlet UIView *tray;      // 名前プレートを配置する枠
 @property (weak, nonatomic) IBOutlet UILabel *plate;    // 名前プレート
+
+@property (weak, nonatomic) IBOutlet UILabel *teams;    // シャッフルするチーム数
+- (IBAction)changeTeams:(UIStepper *)sender;            // チーム数変更
+- (IBAction)shuffle:(UIButton *)sender;                 // シャッフルボタン
 
 // アプリケーション共有モデルコントローラ
 - (ModelController *)appModelController;
@@ -153,6 +158,25 @@
 - (void)resultViewControllerDidFinish:(ResultViewController *)controller
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark Event Handler
+
+//================================================================
+- (IBAction)changeTeams:(UIStepper *)sender
+{
+    NSUInteger val = (NSUInteger)sender.value;
+    _teams.text = [NSString stringWithFormat:@"%lu", val];
+}
+
+//================================================================
+- (IBAction)shuffle:(UIButton *)sender
+{
+    NSUInteger teams = (NSUInteger)[_teams.text integerValue];
+    ModelController *mc = [self appModelController];
+    if (!mc.isShuffled) {
+        [mc shuffle:teams];
+    }
 }
 
 @end

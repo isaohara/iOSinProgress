@@ -9,23 +9,21 @@
 #import <Foundation/Foundation.h>
 
 @class EntryTeam;
-//@class EntryMember;
 
 @interface ModelController : NSObject
 
 // 全メンバーを参照
-
+- (EntryTeam *)teamAll;
 // エントリーしたメンバーを参照
 - (EntryTeam *)teamEntry;
 
-// シャッフル済みかどうか
-
 // エントリーしたメンバーをシャッフルする
-
-// シャッフル後の1つ目のチームメンバーを参照
-- (EntryTeam *)teamLeft;
-
-// シャッフル後の2つ目のチームメンバーを参照
-- (EntryTeam *)teamRight;
+- (void)shuffle:(NSUInteger)inTeams;
+// シャッフル後のチームメンバーを参照
+- (NSArray *)teamShuffled;
+// シャッフル済みかどうか
+- (BOOL)isShuffled;
+// シャッフルをクリア
+- (void)initializeShuffled;
 
 @end

@@ -17,10 +17,13 @@
     // エントリーしたメンバー
     EntryTeam *_entryMembers;
 
-    // シャッルフ後のメンバー
-    EntryTeam *_leftShuffledMembers;     // 1つ目
-    EntryTeam *_rightShuffledMembers;    // 2つ目
+    // シャッフル後のメンバー
+    // |EntryTeam|の配列
+    NSMutableArray *_teamsShuffled;
 }
+
+// エントリーしたメンバーのデータ作成後に、メンバー(全メンバー)のデータに変更あったか(=YES)どうか
+@property (assign, nonatomic) BOOL dirty;
 
 // (ストレージから)メンバーのデータを読み込む
 - (void)loadAllMembersFromStore;
@@ -38,10 +41,10 @@
     if (!self) return nil;
 
     // Additional initializer
-    _allMembers           = [[EntryTeam alloc] init];
-    _entryMembers         = [[EntryTeam alloc] init];
-//    _leftShuffledMembers  = [[EntryTeam alloc] init];
-//    _rightShuffledMembers = [[EntryTeam alloc] init];
+    _allMembers = [[EntryTeam alloc] init];
+    _entryMembers = [[EntryTeam alloc] init];
+    _teamsShuffled = [[NSMutableArray alloc] init];
+    _dirty = YES;
 
     [self loadAllMembersFromStore];
 
@@ -51,18 +54,28 @@
 #pragma mark
 
 //================================================================
+// 全メンバーを参照
+- (EntryTeam *)teamAll
+{
+    return _allMembers;
+}
+
+//================================================================
 // エントリーしたメンバーを参照
 - (EntryTeam *)teamEntry
 {
-    [_entryMembers removeAllMembers];
+    if (_dirty) {
+        // データを再作成
+        [_entryMembers removeAllMembers];
 
-    NSArray *allIdentifiers = [_allMembers identifiersOfAllMembers];
-    NSEnumerator *allEnumerator = [allIdentifiers objectEnumerator];
-    NSNumber *identifier;
-    while (identifier = (NSNumber *)[allEnumerator nextObject]) {
-        EntryMember *member = [_allMembers memberForIdentifier:identifier];
-        if (member.isRegistered) {
-            [_entryMembers addMember:member];
+        NSArray *allIdentifiers = [_allMembers identifiersOfAllMembers];
+        NSEnumerator *allEnumerator = [allIdentifiers objectEnumerator];
+        NSNumber *identifier;
+        while (identifier = (NSNumber *)[allEnumerator nextObject]) {
+            EntryMember *member = [_allMembers memberForIdentifier:identifier];
+            if (member.isRegistered) {
+                [_entryMembers addMember:member];
+            }
         }
     }
 
@@ -70,19 +83,55 @@
 }
 
 //================================================================
-// シャッフル後の1つ目のチームメンバーを参照
-- (EntryTeam *)teamLeft
+// エントリーしたメンバーをシャッフルする (|inTeams| - チーム数)
+- (void)shuffle:(NSUInteger)inTeams
 {
-    return nil;////
-//    return _leftShuffledMembers;
+    // チーム数分のチームオブジェクトを作成
+    for (NSUInteger i = 0; i < inTeams; ++i) {
+        [_teamsShuffled addObject:[[EntryTeam alloc] init]];
+    }
+
+    // エントリーしたメンバのデータを準備
+    EntryTeam *entry = [self teamEntry];
+    NSMutableArray * identifiersEntry = [NSMutableArray arrayWithArray:[entry identifiersOfAllMembers]];
+
+    // シャッフル
+    NSUInteger indexShuffled = 0;
+    while (identifiersEntry.count > 0) {
+        // 乱数でメンバーを選び、チームに分ける
+        NSUInteger indexEntry = ((NSUInteger)arc4random() % identifiersEntry.count);
+
+        EntryMember *member = [entry memberForIdentifier:identifiersEntry[indexEntry]];
+        [_teamsShuffled[indexShuffled] addMember:member];
+
+        [identifiersEntry removeObjectAtIndex:indexEntry];
+
+        ++indexShuffled;
+        if (indexShuffled >= inTeams) {
+            indexShuffled = 0;
+        }
+    }
 }
 
 //================================================================
-// シャッフル後の2つ目のチームメンバーを参照
-- (EntryTeam *)teamRight
+// シャッフル後のチームメンバーを参照
+- (NSArray *)teamShuffled
 {
-    return nil;////
-//    return _rightShuffledMembers;
+    return (NSArray *)_teamsShuffled;
+}
+
+//================================================================
+// シャッフル済みかどうか
+- (BOOL)isShuffled
+{
+    return (_teamsShuffled.count >= 2);
+}
+
+//================================================================
+// シャッフルをクリア
+- (void)initializeShuffled
+{
+    [_teamsShuffled removeAllObjects];
 }
 
 #pragma mark Inner Method
@@ -99,6 +148,7 @@
 
     //--------------------------------
     // 全メンバのデータを作成
+    _dirty = YES;
     m = [[EntryMember alloc] init];  m.name = @"原";  m.sortKey = @"ハラ";  m.registered = YES;
     [_allMembers addMemberWithAutoNumberingIndentifier:m];
     m = [[EntryMember alloc] init];  m.name = @"松原";  m.sortKey = @"マツバラ";  m.registered = YES;
