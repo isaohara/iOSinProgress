@@ -7,10 +7,24 @@
 //
 
 #import "ResultViewController.h"
+#import "AppDelegate.h"
+#import "ModelController.h"
+#import "EntryTeam.h"
+#import "EntryMember.h"
 
 @interface ResultViewController ()
 
+@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *trays;
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *plates;
+
 - (IBAction)clear:(UIButton *)sender;
+
+// アプリケーション共有モデルコントローラ
+- (ModelController *)appModelController;
+// メンバーを画面に表示
+- (void)showShuffledMembers:(NSArray *)teams;
+// 名前プレートを作成して表示
+- (CGRect)createPlate:(NSString *)name at:(CGPoint)origin on:(UIView *)tray using:(UILabel *)plateTemplate;
 
 @end
 
@@ -31,6 +45,17 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
+    // シャッフルされたメンバーを画面に表示
+    for (UILabel* plate in _plates) {   // 名前プレート(テンプレート)は非表示に
+        plate.hidden = YES;
+    }
+
+    NSArray *teams = [[self appModelController] teamShuffled];
+    if (teams.count < 3) {
+        ((UIView *)_trays[2]).hidden = YES;
+    }
+    [self showShuffledMembers:teams];
 }
 
 //================================================================
@@ -38,6 +63,76 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark -
+
+#pragma mark Inner Method
+
+//================================================================
+// アプリケーション共有モデルコントローラ
+- (ModelController *)appModelController
+{
+    AppDelegate *appDelegete = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    return appDelegete.modelController;
+}
+
+//================================================================
+// シャッフルされたメンバーを画面に表示
+- (void)showShuffledMembers:(NSArray *)teams
+{
+    for (NSUInteger i = 0; i < teams.count; ++i) {
+        CGFloat margin = ((UILabel *)_plates[i]).frame.size.width;
+        CGPoint origin = CGPointMake(margin, margin);
+
+        NSArray *names = [(EntryTeam *)teams[i] namesOfAllMembers];
+
+        for (NSString *name in names) {
+            CGRect frame = [self createPlate:name at:origin on:_trays[i] using:_plates[i]];
+            origin = CGPointMake(frame.origin.x + frame.size.width + margin, frame.origin.y);
+        }
+
+    }
+}
+
+//================================================================
+// 名前プレートを作成して表示
+- (CGRect)createPlate:(NSString *)name at:(CGPoint)origin on:(UIView *)tray using:(UILabel *)plateTemplate
+{
+    // 設定値を決める(名前プレートひな形の属性も使う)
+    UIFont *font = plateTemplate.font;
+    NSTextAlignment textAlignment = plateTemplate.textAlignment;
+    UIColor *textColor = plateTemplate.textColor;
+    UIColor *backgroundColor = plateTemplate.backgroundColor;
+    CGFloat margin = plateTemplate.frame.size.width;
+    CGFloat height = plateTemplate.frame.size.height;
+
+    // 名前プレートを作成
+    UILabel *plate = [[UILabel alloc] init];
+    plate.text = name;
+    plate.font = font;
+    plate.textAlignment = textAlignment;
+    plate.textColor = textColor;
+    plate.backgroundColor = backgroundColor;
+
+    [plate sizeToFit];
+
+    CGFloat width = plate.frame.size.width + margin;
+    plate.frame = CGRectMake(origin.x, origin.y, width, height);
+
+    // 枠をはみ出さないように調整
+    CGFloat limit = tray.frame.size.width - margin;
+    if (plate.frame.origin.x + plate.frame.size.width > limit) {
+        // はみ出した場合
+        CGFloat nextX = margin;
+        CGFloat nextY = plate.frame.origin.y + plate.frame.size.height + margin;
+        plate.frame = CGRectMake(nextX, nextY, width, height);
+    }
+
+    // 名前プレートを表示
+    [tray addSubview:plate];
+
+    return plate.frame;
 }
 
 

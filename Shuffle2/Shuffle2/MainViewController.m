@@ -16,13 +16,19 @@
 
 @property (weak, nonatomic) IBOutlet UIView *tray;      // 名前プレートを配置する枠
 @property (weak, nonatomic) IBOutlet UILabel *plate;    // 名前プレート
-
 @property (weak, nonatomic) IBOutlet UILabel *teams;    // シャッフルするチーム数
+
+@property (weak, nonatomic) IBOutlet UIStepper *changeTeams;    // チーム数変更
+@property (weak, nonatomic) IBOutlet UIButton *shuffle;         // シャッフルボタン
+@property (weak, nonatomic) IBOutlet UIButton *result;          // 結果ボタン
 - (IBAction)changeTeams:(UIStepper *)sender;            // チーム数変更
 - (IBAction)shuffle:(UIButton *)sender;                 // シャッフルボタン
+- (IBAction)result:(UIButton *)sender;                  // 結果ボタン
 
 // アプリケーション共有モデルコントローラ
 - (ModelController *)appModelController;
+// シャッフル済みかどうかでボタン等の有効・無効を切り替える
+- (void)switchEnabledAsShuffled;
 // メンバーを画面に表示
 - (void)showTeamMembers:(EntryTeam *)team;
 // 名前プレートを作成して表示
@@ -48,8 +54,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    // エントリーされたメンバーを画面に表示
     _plate.hidden = YES;    // 名前プレート(テンプレート)は非表示に
+
+    // シャッフル済みかどうかで、ボタン等の有効/無効を切り替える
+    [self switchEnabledAsShuffled];
+
+    // エントリーされたメンバーを画面に表示
     EntryTeam *team = [[self appModelController] teamEntry];
     [self showTeamMembers:team];
 }
@@ -74,10 +84,19 @@
 }
 
 //================================================================
+// シャッフル済みかどうかでボタン等の有効・無効を切り替える
+- (void)switchEnabledAsShuffled
+{
+    BOOL isShuffled = [[self appModelController] isShuffled];
+    _shuffle.enabled = _teams.enabled = _changeTeams.enabled = !isShuffled;
+    _result.enabled = isShuffled;
+}
+
+//================================================================
 // メンバーを画面に表示
 - (void)showTeamMembers:(EntryTeam *)team
 {
-    CGFloat margin = _plate.frame.size.width;;
+    CGFloat margin = _plate.frame.size.width;
     CGPoint origin = CGPointMake(margin, margin);
 
     NSArray *names = [team namesOfAllMembers];
@@ -141,7 +160,7 @@
         [[segue destinationViewController] setDelegate:self];
     }
     else if ([[segue identifier] isEqualToString:@"toResult"]) {
-        // [Shuffle] buttonをタップ
+        // [Result] buttonをタップ
         [[segue destinationViewController] setDelegate:self];
     }
 }
@@ -177,6 +196,13 @@
     if (!mc.isShuffled) {
         [mc shuffle:teams];
     }
+
+    [self switchEnabledAsShuffled];
+}
+
+//================================================================
+- (IBAction)result:(UIButton *)sender
+{
 }
 
 @end
