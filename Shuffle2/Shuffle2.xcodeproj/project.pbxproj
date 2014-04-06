@@ -22,6 +22,10 @@
 		4397371B18F029810065B03E /* Shuffle2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4397371A18F029810065B03E /* Shuffle2Tests.m */; };
 		4397372618F029C80065B03E /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4397372518F029C80065B03E /* MainViewController.m */; };
 		4397372C18F02D670065B03E /* ResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4397372B18F02D670065B03E /* ResultViewController.m */; };
+		4397372F18F0C3070065B03E /* EntryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4397372E18F0C3070065B03E /* EntryTableViewController.m */; };
+		4397373218F0D3B70065B03E /* EntryMember.m in Sources */ = {isa = PBXBuildFile; fileRef = 4397373118F0D3B70065B03E /* EntryMember.m */; };
+		4397373518F0D7AE0065B03E /* EntryTeam.m in Sources */ = {isa = PBXBuildFile; fileRef = 4397373418F0D7AE0065B03E /* EntryTeam.m */; };
+		4397373818F0FA3D0065B03E /* ModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4397373718F0FA3D0065B03E /* ModelController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +60,14 @@
 		4397372518F029C80065B03E /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		4397372A18F02D670065B03E /* ResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultViewController.h; sourceTree = "<group>"; };
 		4397372B18F02D670065B03E /* ResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultViewController.m; sourceTree = "<group>"; };
+		4397372D18F0C3070065B03E /* EntryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntryTableViewController.h; sourceTree = "<group>"; };
+		4397372E18F0C3070065B03E /* EntryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntryTableViewController.m; sourceTree = "<group>"; };
+		4397373018F0D3B70065B03E /* EntryMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntryMember.h; sourceTree = "<group>"; };
+		4397373118F0D3B70065B03E /* EntryMember.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntryMember.m; sourceTree = "<group>"; };
+		4397373318F0D7AE0065B03E /* EntryTeam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntryTeam.h; sourceTree = "<group>"; };
+		4397373418F0D7AE0065B03E /* EntryTeam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntryTeam.m; sourceTree = "<group>"; };
+		4397373618F0FA3D0065B03E /* ModelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelController.h; sourceTree = "<group>"; };
+		4397373718F0FA3D0065B03E /* ModelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,8 +132,16 @@
 				4397370118F029810065B03E /* Main.storyboard */,
 				4397372418F029C80065B03E /* MainViewController.h */,
 				4397372518F029C80065B03E /* MainViewController.m */,
+				4397372D18F0C3070065B03E /* EntryTableViewController.h */,
+				4397372E18F0C3070065B03E /* EntryTableViewController.m */,
 				4397372A18F02D670065B03E /* ResultViewController.h */,
 				4397372B18F02D670065B03E /* ResultViewController.m */,
+				4397373618F0FA3D0065B03E /* ModelController.h */,
+				4397373718F0FA3D0065B03E /* ModelController.m */,
+				4397373318F0D7AE0065B03E /* EntryTeam.h */,
+				4397373418F0D7AE0065B03E /* EntryTeam.m */,
+				4397373018F0D3B70065B03E /* EntryMember.h */,
+				4397373118F0D3B70065B03E /* EntryMember.m */,
 				4397370718F029810065B03E /* Images.xcassets */,
 				439736F618F029810065B03E /* Supporting Files */,
 			);
@@ -255,8 +275,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4397370018F029810065B03E /* AppDelegate.m in Sources */,
+				4397373818F0FA3D0065B03E /* ModelController.m in Sources */,
 				4397372618F029C80065B03E /* MainViewController.m in Sources */,
 				439736FC18F029810065B03E /* main.m in Sources */,
+				4397372F18F0C3070065B03E /* EntryTableViewController.m in Sources */,
+				4397373518F0D7AE0065B03E /* EntryTeam.m in Sources */,
+				4397373218F0D3B70065B03E /* EntryMember.m in Sources */,
 				4397372C18F02D670065B03E /* ResultViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -462,6 +486,7 @@
 				4397372018F029810065B03E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4397372118F029810065B03E /* Build configuration list for PBXNativeTarget "Shuffle2Tests" */ = {
 			isa = XCConfigurationList;
@@ -470,6 +495,7 @@
 				4397372318F029810065B03E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
