@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class ModelController;
+
 //================================================================
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+//----------------
+@property (strong, nonatomic) ModelController *modelController;
 
 @end

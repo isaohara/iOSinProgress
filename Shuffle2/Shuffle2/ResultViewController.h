@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+//================================================================
 @class ResultViewController;
 
-//================================================================
 @protocol ResultViewControllerDelegate
 
 - (void)resultViewControllerDidFinish:(ResultViewController *)controller;

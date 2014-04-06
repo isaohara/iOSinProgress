@@ -9,7 +9,9 @@
 #import "ResultViewController.h"
 
 @interface ResultViewController ()
+
 - (IBAction)clear:(UIButton *)sender;
+
 @end
 
 @implementation ResultViewController

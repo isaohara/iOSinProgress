@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EntryTableViewController.h"
 #import "ResultViewController.h"
 
+
 //================================================================
-@interface MainViewController : UIViewController <ResultViewControllerDelegate>
+@interface MainViewController : UIViewController <ResultViewControllerDelegate, EntryTableViewControllerDelegate>
 @end

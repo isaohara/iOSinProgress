@@ -7,8 +7,19 @@
 //
 
 #import "MainViewController.h"
+#import "AppDelegate.h"
+#import "ModelController.h"
+#import "EntryTeam.h"
+#import "EntryMember.h"
 
 @interface MainViewController ()
+
+// アプリケーション共有モデルコントローラ
+- (ModelController *)appModelController;
+
+// メンバーを画面に表示
+- (void)showTeamMembers:(EntryTeam *)team;
+
 @end
 
 @implementation MainViewController
@@ -28,6 +39,10 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
+    // エントリーされたメンバーを画面に表示
+    EntryTeam *team = [[self appModelController] teamEntry];
+    [self showTeamMembers:team];
 }
 
 //================================================================
@@ -35,6 +50,27 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark -
+
+#pragma mark Inner Method
+
+//================================================================
+// アプリケーション共有モデルコントローラ
+- (ModelController *)appModelController
+{
+    AppDelegate *appDelegete = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    return appDelegete.modelController;
+}
+
+//================================================================
+// メンバーを画面に表示
+- (void)showTeamMembers:(EntryTeam *)team
+{
+    NSArray *names = [team namesOfAllMembers];
+
+    //// to be continued...
 }
 
 #pragma mark - Navigation
@@ -45,12 +81,23 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 
-    if ([[segue identifier] isEqualToString:@"toResult"]) {
+    if ([[segue identifier] isEqualToString:@"toEntry"]) {
+        // [Entry] buttonをタップ
+        [[segue destinationViewController] setDelegate:self];
+    }
+    else if ([[segue identifier] isEqualToString:@"toResult"]) {
+        // [Shuffle] buttonをタップ
         [[segue destinationViewController] setDelegate:self];
     }
 }
 
 #pragma mark Delegate
+
+//================================================================
+- (void)entryTableViewControllerDidFinish:(EntryTableViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 //================================================================
 - (void)resultViewControllerDidFinish:(ResultViewController *)controller
