@@ -40,8 +40,8 @@
     // Additional initializer
     _allMembers           = [[EntryTeam alloc] init];
     _entryMembers         = [[EntryTeam alloc] init];
-    _leftShuffledMembers  = [[EntryTeam alloc] init];
-    _rightShuffledMembers = [[EntryTeam alloc] init];
+//    _leftShuffledMembers  = [[EntryTeam alloc] init];
+//    _rightShuffledMembers = [[EntryTeam alloc] init];
 
     [self loadAllMembersFromStore];
 
@@ -54,6 +54,18 @@
 // エントリーしたメンバーを参照
 - (EntryTeam *)teamEntry
 {
+    [_entryMembers removeAllMembers];
+
+    NSArray *allIdentifiers = [_allMembers identifiersOfAllMembers];
+    NSEnumerator *allEnumerator = [allIdentifiers objectEnumerator];
+    NSNumber *identifier;
+    while (identifier = (NSNumber *)[allEnumerator nextObject]) {
+        EntryMember *member = [_allMembers memberForIdentifier:identifier];
+        if (member.isRegistered) {
+            [_entryMembers addMember:member];
+        }
+    }
+
     return _entryMembers;
 }
 
@@ -61,14 +73,16 @@
 // シャッフル後の1つ目のチームメンバーを参照
 - (EntryTeam *)teamLeft
 {
-    return _leftShuffledMembers;
+    return nil;////
+//    return _leftShuffledMembers;
 }
 
 //================================================================
 // シャッフル後の2つ目のチームメンバーを参照
 - (EntryTeam *)teamRight
 {
-    return _rightShuffledMembers;
+    return nil;////
+//    return _rightShuffledMembers;
 }
 
 #pragma mark Inner Method
@@ -115,35 +129,6 @@
     [_allMembers addMemberWithAutoNumberingIndentifier:m];
     m = [[EntryMember alloc] init];  m.name = @"悦喜";  m.sortKey = @"エキ";  m.registered = NO;
     [_allMembers addMemberWithAutoNumberingIndentifier:m];
-
-    //--------------------------------
-    // エントリしたメンバのデータを作成
-    NSArray *allIds = [_allMembers identifiersOfAllMembers];
-    NSEnumerator *enu = [allIds objectEnumerator];
-    NSNumber *mbrId;
-    while (mbrId = (NSNumber *)[enu nextObject]) {
-        EntryMember *mbr = [_allMembers memberForIdentifier:mbrId];
-        if (mbr.isRegistered) {
-            [_entryMembers addMember:mbr];
-        }
-    }
-
-
-
-//    NSArray *ids = [_entryMembers identifiersOfAllMembers];
-//    NSEnumerator *enumerator = [ids objectEnumerator];
-//    NSNumber *id;
-//    NSLog(@"====================");
-//    while (id = (NSNumber *)[enumerator nextObject]) {
-//        EntryMember *mbr = [_entryMembers memberForIdentifier:id];
-//        NSLog(@"--------");
-//        NSLog(@"id[%@]", mbr.identifier);
-//        NSLog(@"name[%@]", mbr.name);
-//        NSLog(@"key[%@]", mbr.sortKey);
-//        NSLog(@"reg[%d]", mbr.isRegistered);
-//    }
-//    NSLog(@"====================");
-
 }
 
 @end
